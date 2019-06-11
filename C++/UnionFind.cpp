@@ -33,7 +33,7 @@ private:
     static const int N = 1000;
     int id[N];
     
-    int root(int i)
+    int root(int i)   //returns the root of a parent
     {
         while (i != id[i])
             i = id[i];
@@ -45,11 +45,11 @@ public:
         for (int i = 0; i < N; i++)
             id[i] = i;
     }
-    bool connected(int p, int q)
+    bool connected(int p, int q)   //two objects are connected if their root is the same
     {
         return root(p) == root(q);
     }
-    void Union(int p, int q)
+    void Union(int p, int q)   //change the root of p to root of q
     {
         int i = root(p);
         int j = root(q);
@@ -60,6 +60,7 @@ public:
 
 int main()
 {
+    //random testing of functions
     quickUnionUF UF;
     UF.Union(4, 3);
     UF.Union(3, 8);
