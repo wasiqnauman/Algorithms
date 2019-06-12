@@ -2,10 +2,11 @@
 
 using namespace std;
 
+static const int N = 1000;
+
 class quickFindUF
 {
 private:
-    static const int N = 1000; //length of array
     int id[N];   //create new array of length N
 public:
     quickFindUF()   //initialize array to values 0<=i<N
@@ -30,13 +31,14 @@ public:
 class quickUnionUF
 {
 private:
-    static const int N = 1000;
     int id[N];
-    
-    int root(int i)   //returns the root of a parent
+
+    int root(int i)
     {
         while (i != id[i])
+        {
             i = id[i];
+        }
         return i;
     }
 public:
@@ -45,22 +47,65 @@ public:
         for (int i = 0; i < N; i++)
             id[i] = i;
     }
-    bool connected(int p, int q)   //two objects are connected if their root is the same
+    bool connected(int p, int q)
     {
         return root(p) == root(q);
     }
-    void Union(int p, int q)   //change the root of p to root of q
+    void Union(int p, int q)
     {
         int i = root(p);
-        int j = root(q);
-        id[i] = j;
+        id[i] = root(q);
     }
 
 };
-
+class quickUnionWPCUF   //weighted with path compression
+{
+private:
+    int id[N];
+    int sz[N];
+    int root(int i)
+    {
+        while (i != id[i])
+        {
+            id[i] = id[id[i]];   //path-compression
+            i = id[i];
+        }
+        return i;
+    }
+public:
+    quickUnionWPCUF()
+    {
+        for (int i = 0; i < N; i++)
+        {
+            id[i] = i;
+            sz[i] = 1;
+        }
+    }
+    bool connected(int p, int q)
+    {
+        return root(p) == root(q);
+    }
+    void Union(int p, int q)
+    {
+        int i = root(p);
+        int j = root(q);
+        if (i == j)   //roots are the same, so they must be connected already
+            return;
+        if (sz[i] > sz[j])   //weighing
+        {
+            id[j] = i;
+            sz[i] += sz[j];
+        }
+        else
+        {
+            id[i] = j;
+            sz[j] += sz[i];
+        }
+    }
+};
 int main()
 {
-    //random testing of functions
+    //test
     quickUnionUF UF;
     UF.Union(4, 3);
     UF.Union(3, 8);
