@@ -51,7 +51,7 @@ bool Stack::isEmpty()
     return first == nullptr;
 }
 
-int main()
+int main()   //test
 {
     Stack X;
     string s;
