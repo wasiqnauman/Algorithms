@@ -13,6 +13,7 @@ struct Node
         this->next = next;
     }
 };
+
 class Stack
 {
 private:
@@ -22,28 +23,33 @@ public:
     {
         this->first = nullptr;
     }
-    void push(string val)
-    {
-        first = new Node(val, this->first);   //create a new node at the start of the linked list
-    }
-    string pop()
-    {
-        if (first != nullptr)
-        {
-            Node* last = first;   // the last node on the linked list
-            string item = last->val;   // the item to be returned
-            first = first->next;
-            delete last;   // delete the last node to free memory
-            return item;
-        }
-        cout << "Stack is Empty" << endl;  // to avoid underflow of popping an empty stack
-        
-    }
-    bool isEmpty()
-    {
-        return first == nullptr;
-    }
+    void push(string val);
+    string pop();
+    bool isEmpty();
 };
+
+void Stack::push(string val)
+{
+    first = new Node(val, this->first);   //create a new node at the start of the linked list
+}
+
+string Stack::pop()
+{
+    if (first != nullptr)
+    {
+        Node* last = first;   // the last node on the linked list
+        string item = last->val;   // the item to be returned
+        first = first->next;
+        delete last;   // delete the last node to free memory
+        return item;
+    }
+    cout << "Stack is Empty" << endl;  // to avoid underflow of popping an empty stack
+}
+
+bool Stack::isEmpty()
+{
+    return first == nullptr;
+}
 
 int main()
 {
