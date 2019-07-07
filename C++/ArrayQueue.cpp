@@ -2,7 +2,8 @@
 
 using namespace std;
 
-template<class T>
+
+template<class T>   // template to allow for generic types
 class Queue
 {
 private:
