@@ -2,77 +2,78 @@
 
 using namespace std;
 
+template<class T>
 class Queue
 {
 private:
-    string* s;
+    T* s;
     int N;   //pointer to the end of the queue
     int capacity;
     int start;   //pointer to the start of the queue;
 public:
     Queue()
     {
-        s = new string[1];
+        s = new T[1];
         N = 0;
         capacity = 1;
         start = 0;
     }
     void resize(int newSize);
     bool isEmpty();
-    void enqueue(string item);
-    string dequeue();
+    void enqueue(T item);
+    T dequeue();
 };
 
-void Queue::resize(int newSize)
+template <class T> void Queue<T>::resize(int newSize)
 {
-  string* copy = new string[newSize];
-  for(int i = 0; i<N;i++)
-  {
-    copy[i] = s[i];
-  }
-  string* old = s;
-  s = copy;
-  capacity = newSize;
-  delete[] old;
+    T* copy = new T[newSize];
+    for (int i = 0; i < N; i++)
+    {
+        copy[i] = s[i];
+    }
+    T* old = s;
+    s = copy;
+    capacity = newSize;
+    delete[] old;
 }
-bool Queue::isEmpty()
+template <class T> bool Queue<T>::isEmpty()
 {
-  return N == 0;
+    return N == 0;
 }
-void Queue::enqueue(string item)
+template <class T> void Queue<T>::enqueue(T item)
 {
-  if(N == capacity)
-  {
-    resize(capacity*2);
-  }
-  s[N++] = item;
+    if (N == capacity)
+    {
+        resize(capacity * 2);
+    }
+    s[N++] = item;
 }
-string Queue::dequeue()
+template <class T> T Queue<T>::dequeue()
 {
-  if (start == N)
-  {
-    cout << "Queue is empty" << endl;
-    exit(1);
-  }
-  string item = s[start++];
-  if(N>0 && N==capacity/4)
-  {
-    resize(capacity/2);
-  }
-  return item;
+    if (start == N)
+    {
+        cout << "Queue is empty" << endl;
+        exit(1);
+    }
+    T item = s[start++];
+    if (N > 0 && N == capacity / 4)
+    {
+        resize(capacity / 2);
+    }
+    return item;
 }
 int main()
 {
-  Queue X;
-  string s;
-  while(cin>>s)
-  {
-    if(s=="-")
+    Queue<string> X;
+    string s;
+    while (cin >> s)
     {
-      cout << X.dequeue() << " ";
+        if (s == "-")
+        {
+            cout << X.dequeue() << " ";
+        }
+        else
+            X.enqueue(s);
     }
-    else
-      X.enqueue(s);
-  }
-  return 0;
+    return 0;
 }
