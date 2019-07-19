@@ -1,9 +1,9 @@
-public class UF {
+public class UnionFind {
 
     private int[] id;
     private int[] sz;
 
-    public UF(int N){
+    public UnionFind(int N){
         id = new int[N];
         sz = new int[N];
 
@@ -44,7 +44,7 @@ public class UF {
     }
     public static void main(String[] args)
     {
-        UF x = new UF(10);
+        UnionFind x = new UnionFind(10);
         x.connect(1,4);
         x.connect(4,5);
         x.connect(5,8);
