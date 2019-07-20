@@ -16,7 +16,7 @@ void merge(T a[], T* aux, int lo, int mid, int hi)
       a[k] = aux[j++];
     else if (j > hi)
       a[k] = aux[i++];
-    else if (aux[j] < a[i])
+    else if (aux[j] < aux[i])
       a[k] = aux[j++];
     else
       a[k] = aux[i++];
