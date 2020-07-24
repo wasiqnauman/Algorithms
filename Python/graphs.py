@@ -1,4 +1,5 @@
 from queue import Queue
+from _collections import deque
 
 class Graph:
     def __init__(self,V):
@@ -11,6 +12,9 @@ class Graph:
     def addEdge(self, u, v):
         self.adj[u].append(v)
         self.adj[v].append(u)
+
+    def add_directed_edge(self,u,v):
+        self.adj[u].append(v)
 
     def dfs(self, v):
         marked = [False for i in range(0, self.V)]
@@ -63,15 +67,60 @@ class Graph:
                     q.put(w)
                     marked[w] = True
 
+    def topo_sort(self):
+        """
+        returns the topological order of the graph
+        also called the reversePostOrder
+        using deque over list as it provides O(1) operations
+        as compared to O(n) for the list
+
+        time: O(|V| + |E|)
+        """
+        marked = [False for i in range(0, self.V)]
+        reversePost = deque()
+
+        for v in range(0,self.V):
+            if not marked[v]:
+                self._dfs_topo(marked,reversePost,v)
+
+        return reversePost
+
+    def _dfs_topo(self,marked,reversePost,v):
+        marked[v] = True
+        for w in self.adj[v]:
+            if not marked[w]:
+                self._dfs_topo(marked,reversePost,w)
+
+        reversePost.append(v)
+
+
+    def print_topo_order(self):
+        reversePost = self.topo_sort()
+        print('Topological Order:')
+        while reversePost:
+            print(reversePost.pop(), end=" ")
 
 
 
-g = Graph(7)
-g.addEdge(0, 1)
-g.addEdge(0, 2)
-g.addEdge(0, 6)
-g.addEdge(0, 5)
-g.addEdge(5, 3)
-g.addEdge(5, 4)
-g.addEdge(6, 4)
-g.BFS(0)
+if __name__ == "__main__":
+    g = Graph(7)
+    # g.addEdge(0, 1)
+    # g.addEdge(0, 2)
+    # g.addEdge(0, 6)
+    # g.addEdge(0, 5)
+    # g.addEdge(5, 3)
+    # g.addEdge(5, 4)
+    # g.addEdge(6, 4)
+    # g.BFS(0)
+    g.add_directed_edge(0, 1)
+    g.add_directed_edge(0, 5)
+    g.add_directed_edge(0, 2)
+    g.add_directed_edge(3, 2)
+    g.add_directed_edge(3, 5)
+    g.add_directed_edge(5, 2)
+    g.add_directed_edge(1, 4)
+    g.add_directed_edge(3, 4)
+    g.add_directed_edge(3, 6)
+    g.add_directed_edge(6, 4)
+    g.add_directed_edge(6, 0)
+    g.print_topo_order()
