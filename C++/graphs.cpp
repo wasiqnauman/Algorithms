@@ -22,8 +22,8 @@ public:
     void dfs(int v) {
         vector<bool>marked(V,false);
 
-        for(int w: adj[v]) {
-            if(!marked[w]) {
+        for(int v=0; v<V;v++) {
+            if(!marked[v]) {
                 _dfs(v,marked);
             }
         }
@@ -72,6 +72,55 @@ public:
             s.pop();
         }
     }
+    bool hasCycle()
+    {
+        vector<bool>marked(V,false);
+        vector<bool>on_stack(V,false);
+        bool found_cycle = false;
+        for(int i=0; i<V; i++)
+        {
+            if(!marked[i])
+                dfs_cycle(i, marked, on_stack, found_cycle);
+        }
+        return found_cycle;
+    }
+    void dfs_cycle(int v, vector<bool>&marked, vector<bool>&on_stack, bool& found)
+    {
+        marked[v] = true;
+        on_stack[v] = true;
+
+        for(int w: adj[v])
+        {
+            if(on_stack[w])
+                found = true;
+            else
+                dfs_cycle(w, marked, on_stack, found);
+        }
+        on_stack[v] = false;
+    }
+    int num_components() {
+        vector<bool>marked(V,false);
+        vector<int>id(V,-1);
+        int count=0;
+
+        for(int v=0; v< V;v++) {
+            if(!marked[v]) {
+                _dfs_CC(marked,id,count,v);
+                count++;
+            }
+        }
+        return count;
+    }
+    void _dfs_CC(vector<bool>&marked,vector<int>&id, int count, int v) {
+        marked[v] = true;
+        id[v] = count;
+        cout << "v:" << v << " id:" << count << endl;
+        for(int w:adj[v]) {
+            if(!marked[w]) {
+                _dfs_CC(marked,id,count,w);
+            }
+        }
+    }
 };
 
 
@@ -95,7 +144,10 @@ int main() {
     g.add_directed_edge(3,6);
     g.add_directed_edge(6,4);
     g.add_directed_edge(6,0);
-    g.print_topo_sort();
+    g.add_directed_edge(6,3);
+    cout << g.hasCycle() << endl;
+//    g.print_topo_sort();
+//    cout << stoi("1");
 
 
 
