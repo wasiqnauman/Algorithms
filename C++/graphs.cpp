@@ -12,11 +12,15 @@ class Graph {
 protected:
     int V;
     vector<vector<int>> adj;
+    queue<int>pre;
+    queue<int>post;
+    stack<int>reversePost;
 
 public:
     Graph(int V) {
         this->V = V;
         adj.assign(V,vector<int>());
+
     }
 
     void dfs(int v) {
@@ -29,12 +33,15 @@ public:
         }
     }
     void _dfs(int v, vector<bool> &marked) {
+        pre.push(v);
         marked[v] = true;
         cout << v << endl;
         for(int w: adj[v]) {
             if (!marked[w])
                 _dfs(w,marked);
         }
+        post.push(v);
+        reversePost.push(v);
     }
     void add_edge(int u, int v) {
         adj[u].push_back(v);
@@ -121,6 +128,27 @@ public:
             }
         }
     }
+    void preOrder()
+    {
+        while(!pre.empty()){
+            cout << pre.front() << " ";
+            pre.pop();
+        }
+    }
+    void postOrder()
+    {
+        while(!post.empty()){
+            cout << post.front() << " ";
+            post.pop();
+        }
+    }
+    void reverse_postOrder()
+    {
+        while(!reversePost.empty()){
+            cout << reversePost.top() << " ";
+            reversePost.pop();
+        }
+    }
 };
 
 
@@ -144,10 +172,15 @@ int main() {
     g.add_directed_edge(3,6);
     g.add_directed_edge(6,4);
     g.add_directed_edge(6,0);
-    g.add_directed_edge(6,3);
-    cout << g.hasCycle() << endl;
+//    g.add_directed_edge(6,3);       // add a cycle 6 - 3
+//    cout << g.hasCycle() << endl;
 //    g.print_topo_sort();
-//    cout << stoi("1");
+    g.dfs(0);
+    cout << endl;
+    g.reverse_postOrder();
+    cout << endl;
+    g.print_topo_sort();
+
 
 
 
