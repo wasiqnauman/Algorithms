@@ -101,7 +101,8 @@ public:
             if(on_stack[w])
                 found = true;
             else
-                dfs_cycle(w, marked, on_stack, found);
+                if(!marked[w])
+                    dfs_cycle(w, marked, on_stack, found);
         }
         on_stack[v] = false;
     }
@@ -149,6 +150,30 @@ public:
             reversePost.pop();
         }
     }
+    void BFS()
+    {
+        if(V == 0)
+            return;
+        queue<int>q;
+        vector<bool>marked(V,false);
+        q.push(0);
+        marked[0] = true;
+        while(!q.empty())
+        {
+            int v = q.front(); q.pop();
+            cout << v << " ";
+            for(int w: adj[v])
+            {
+                if(!marked[w])
+                {
+                    marked[w] = true;
+                    q.push(w);
+                }
+            }
+        }
+
+    }
+
 };
 
 
@@ -175,11 +200,7 @@ int main() {
 //    g.add_directed_edge(6,3);       // add a cycle 6 - 3
 //    cout << g.hasCycle() << endl;
 //    g.print_topo_sort();
-    g.dfs(0);
-    cout << endl;
-    g.reverse_postOrder();
-    cout << endl;
-    g.print_topo_sort();
+    g.BFS();
 
 
 
